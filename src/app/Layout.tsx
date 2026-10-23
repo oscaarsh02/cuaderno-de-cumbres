@@ -1,4 +1,4 @@
-import { Dumbbell, HeartPulse, Mountain, Backpack, type LucideIcon } from 'lucide-react'
+import { Dumbbell, HeartPulse, Mountain, Backpack, Settings, type LucideIcon } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
 
 const PESTANAS: { ruta: string; etiqueta: string; Icono: LucideIcon }[] = [
@@ -13,13 +13,22 @@ export default function Layout() {
       {/* La guía de mal de altura queda a un toque desde cualquier pantalla. */}
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white pt-[env(safe-area-inset-top)] pr-1 pl-4">
         <span className="text-base font-semibold text-slate-700">Cuaderno de Cumbres</span>
-        <Link
-          to="/altura"
-          aria-label="Guía de mal de altura"
-          className="flex size-12 items-center justify-center rounded-xl text-red-800 active:bg-red-50"
-        >
-          <HeartPulse size={28} aria-hidden="true" />
-        </Link>
+        <div className="flex shrink-0">
+          <Link
+            to="/ajustes"
+            aria-label="Ajustes"
+            className="flex size-12 items-center justify-center rounded-xl text-slate-700 active:bg-slate-100"
+          >
+            <Settings size={26} aria-hidden="true" />
+          </Link>
+          <Link
+            to="/altura"
+            aria-label="Guía de mal de altura"
+            className="flex size-12 items-center justify-center rounded-xl text-red-800 active:bg-red-50"
+          >
+            <HeartPulse size={28} aria-hidden="true" />
+          </Link>
+        </div>
       </header>
 
       {/* Espacio inferior para que la barra de pestañas no tape el contenido. */}
