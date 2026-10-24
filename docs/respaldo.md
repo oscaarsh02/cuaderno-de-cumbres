@@ -28,7 +28,19 @@ precargados y personalizados. Las tablas vacías se representan con `[]`.
 Todas las tablas se leen en una misma transacción de solo lectura para evitar
 mezclar estados de distintas escrituras concurrentes.
 
-## Reglas para la futura restauración (RF-22)
+## Restauración (CDC-32 / RF-22)
+
+En Ajustes, seleccionar un archivo en **Archivo de respaldo**. Se valida antes de
+mostrar el resumen de registros y la confirmación **Reemplazar y restaurar**.
+Cancelar conserva todos los datos. Se puede seleccionar otra vez el mismo archivo.
+Se recomienda exportar primero los datos actuales.
+
+La restauración reemplaza las cinco tablas completas, sin combinar registros ni
+reinsertar catálogos iniciales; un respaldo vacío deja las tablas vacías. Funciona
+sin conexión. Una transacción única revierte todas las escrituras si alguna falla.
+Las listas de los módulos consultan la misma base de datos restaurada.
+
+Reglas implementadas en `src/compartido/servicios/restauracion.ts`:
 
 - Validar `formato` y `version` antes de escribir. Rechazar versiones desconocidas.
 - Validar `creadoEn` como fecha ISO 8601 y las cinco listas obligatorias, sus campos
@@ -41,7 +53,7 @@ mezclar estados de distintas escrituras concurrentes.
 - La versión del archivo es independiente de la versión de la base de datos.
   Cambios incompatibles requieren una nueva versión del contrato.
 
-La importación no forma parte de CDC-31. El archivo contiene los registros
+La importación corresponde a CDC-32. El archivo contiene los registros
 personales sin cifrar y debe conservarse en un lugar seguro.
 
 ## Verificación manual
@@ -55,3 +67,15 @@ personales sin cifrar y debe conservarse en un lugar seguro.
    conservarse todos los registros para permitir un nuevo intento.
 6. Revisar Ajustes a 320 px de ancho y con teclado: sin desbordamiento horizontal,
    controles accesibles y mensajes de estado anunciados.
+
+## Prueba automatizada de restauración
+
+Con Vite activo (`npm run dev -- --host 127.0.0.1`), Chrome instalado y Playwright
+disponible, ejecutar `node tests/restauracion.cjs`. Si Playwright está instalado
+fuera del proyecto, definir `PLAYWRIGHT_PATH` con la ruta a su paquete.
+No requiere agregar dependencias a la aplicación. Usa un contexto de navegador
+aislado; no toca los datos del perfil personal.
+
+Cubre cancelación, archivos inválidos (formato, versión, campos, fechas,
+duplicados y relaciones), rollback ante un fallo de escritura intermedio,
+restauración sin conexión, exportación posterior, respaldo vacío y ancho de 320 px.
