@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router'
 import { Download } from 'lucide-react'
 import Encabezado from '../compartido/componentes/Encabezado'
 import MensajeError from '../compartido/componentes/MensajeError'
@@ -69,6 +70,9 @@ export default function PantallaAjustes() {
   return (
     <div className="flex flex-col gap-6">
       <Encabezado titulo="Ajustes" volverA="/cumbres" />
+      <Link to="/ajustes/privacidad" className="flex min-h-12 items-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-semibold text-sky-800 underline underline-offset-4">
+        Atribuciones y privacidad
+      </Link>
       <section aria-labelledby="titulo-respaldo" className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4">
         <h2 id="titulo-respaldo" className="text-xl font-semibold">Respaldo de datos</h2>
         <p>Descarga un archivo con todas tus cumbres, equipo y entrenamientos, incluidos tus catálogos de montañas y ejercicios.</p>
