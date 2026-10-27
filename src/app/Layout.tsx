@@ -1,5 +1,6 @@
 import { Dumbbell, HeartPulse, Mountain, Backpack, Settings, type LucideIcon } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
+import AvisoInstalacion from '../compartido/componentes/AvisoInstalacion'
 
 const PESTANAS: { ruta: string; etiqueta: string; Icono: LucideIcon }[] = [
   { ruta: '/cumbres', etiqueta: 'Cumbres', Icono: Mountain },
@@ -33,6 +34,7 @@ export default function Layout() {
 
       {/* Espacio inferior para que la barra de pestañas no tape el contenido. */}
       <main className="flex-1 px-4 pt-4 pb-28">
+        <AvisoInstalacion />
         <Outlet />
       </main>
 
