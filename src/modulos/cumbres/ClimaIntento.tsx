@@ -1,5 +1,6 @@
 import { Droplets, Hourglass, Thermometer, Wind, type LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { Link } from 'react-router';
 import type { Condiciones, Intento } from '../../compartido/tipos';
 import { describirCielo, describirViento, redondear, unDecimal } from './descripcionClima';
 
@@ -54,6 +55,9 @@ export function DetalleClima({ intento }: { intento: Intento }) {
             </Dato>
           </dl>
           <p className="text-base text-slate-500">Calculado para la altura de la cumbre. Datos de Open-Meteo.</p>
+          <Link to="/ajustes/privacidad" className="flex min-h-11 items-center text-base font-medium text-sky-800 underline underline-offset-4">
+            Atribuciones y privacidad
+          </Link>
         </>
       )}
     </section>
