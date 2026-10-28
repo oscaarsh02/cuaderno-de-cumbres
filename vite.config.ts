@@ -8,17 +8,30 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    // Configuración mínima. Íconos y ajustes de instalación van en el paso 6.
     VitePWA({
       registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      workbox: {
+        navigateFallback: '/index.html',
+        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'],
+        cleanupOutdatedCaches: true,
+      },
       manifest: {
+        id: '/',
         name: 'Cuaderno de Cumbres',
         short_name: 'Cumbres',
+        description: 'Registra tus cumbres, prepara tu equipo y guarda tus entrenamientos, incluso sin conexión.',
         lang: 'es',
+        scope: '/',
         start_url: '/',
         display: 'standalone',
         theme_color: '#1e3a5f',
-        background_color: '#ffffff',
+        background_color: '#f8fafc',
+        icons: [
+          { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: '/pwa-maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
       },
     }),
   ],

@@ -7,6 +7,7 @@ import { PantallaEquipo } from '../modulos/equipo'
 import Layout from './Layout'
 import PantallaAjustes from './PantallaAjustes'
 import PantallaPrivacidad from './PantallaPrivacidad'
+import PantallaInstalacion from './PantallaInstalacion'
 
 export default function App() {
   // Completa el clima de los intentos guardados sin conexión cuando vuelve la red.
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/altura" element={<PantallaAltura />} />
         <Route path="/ajustes" element={<PantallaAjustes />} />
         <Route path="/ajustes/privacidad" element={<PantallaPrivacidad />} />
+        <Route path="/ajustes/instalacion" element={<PantallaInstalacion />} />
         <Route path="*" element={<Navigate to="/cumbres" replace />} />
       </Route>
     </Routes>

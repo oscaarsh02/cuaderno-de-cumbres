@@ -70,6 +70,9 @@ export default function PantallaAjustes() {
   return (
     <div className="flex flex-col gap-6">
       <Encabezado titulo="Ajustes" volverA="/cumbres" />
+      <Link to="/ajustes/instalacion" className="flex min-h-12 items-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-semibold text-sky-800 underline underline-offset-4">
+        Instalar la aplicación
+      </Link>
       <Link to="/ajustes/privacidad" className="flex min-h-12 items-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-semibold text-sky-800 underline underline-offset-4">
         Atribuciones y privacidad
       </Link>
