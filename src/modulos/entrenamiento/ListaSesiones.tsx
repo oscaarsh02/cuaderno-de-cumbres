@@ -1,4 +1,4 @@
-import { ChevronRight, Dumbbell, Plus } from 'lucide-react';
+import { ChevronRight, Dumbbell, Plus, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router';
 import { db } from '../../compartido/db';
 import { useConsulta } from '../../compartido/useConsulta';
@@ -23,13 +23,22 @@ export default function ListaSesiones() {
           <Plus size={24} aria-hidden="true" />
           Nueva sesión
         </Link>
-        <Link
-          to="/entrenamiento/ejercicios"
-          className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 bg-white px-4 text-base font-semibold text-slate-700 active:bg-slate-100"
-        >
-          <Dumbbell size={22} aria-hidden="true" />
-          Mis ejercicios
-        </Link>
+        <div className="grid grid-cols-2 gap-3">
+          <Link
+            to="/entrenamiento/ejercicios"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 bg-white px-3 text-base font-semibold text-slate-700 active:bg-slate-100"
+          >
+            <Dumbbell size={22} aria-hidden="true" />
+            Mis ejercicios
+          </Link>
+          <Link
+            to="/entrenamiento/progreso"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-slate-300 bg-white px-3 text-base font-semibold text-slate-700 active:bg-slate-100"
+          >
+            <TrendingUp size={22} aria-hidden="true" />
+            Mi progreso
+          </Link>
+        </div>
       </div>
 
       {sesiones && sesiones.length === 0 && (
