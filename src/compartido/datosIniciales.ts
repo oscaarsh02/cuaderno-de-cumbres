@@ -1,4 +1,4 @@
-import type { ArticuloEquipo, Categoria, Montana } from './tipos';
+import type { ArticuloEquipo, Categoria, Ejercicio, Montana } from './tipos';
 
 // Datos que se cargan solos la primera vez. Los id son fijos para que un respaldo
 // importado siga apuntando a lo mismo en cualquier dispositivo.
@@ -38,4 +38,47 @@ export const EQUIPO_PRECARGADO: ArticuloEquipo[] = Object.entries(EQUIPO_BASICO_
       categoria: categoria as Categoria,
       empacado: false,
     })),
+);
+
+// Los grupos deben coincidir con GRUPOS_MUSCULARES del módulo de entrenamiento.
+// Sin cardio: una sesión se registra en repeticiones y kilos.
+// Incluye los que más ayudan en montaña: piernas, espalda baja y tronco.
+const EJERCICIOS_BASICOS_POR_GRUPO: Record<string, [id: string, nombre: string][]> = {
+  Piernas: [
+    ['sentadilla', 'Sentadilla'],
+    ['prensa-de-piernas', 'Prensa de piernas'],
+    ['zancadas', 'Zancadas'],
+    ['subida-al-cajon', 'Subida al cajón'],
+    ['peso-muerto-rumano', 'Peso muerto rumano'],
+    ['elevacion-de-talones', 'Elevación de talones'],
+  ],
+  Glúteos: [['empuje-de-cadera', 'Empuje de cadera']],
+  Pecho: [
+    ['press-de-banca', 'Press de banca'],
+    ['lagartijas', 'Lagartijas'],
+  ],
+  Espalda: [
+    ['peso-muerto', 'Peso muerto'],
+    ['remo-con-barra', 'Remo con barra'],
+    ['jalon-al-pecho', 'Jalón al pecho'],
+    ['dominadas', 'Dominadas'],
+  ],
+  Hombros: [
+    ['press-militar', 'Press militar'],
+    ['elevaciones-laterales', 'Elevaciones laterales'],
+  ],
+  Brazos: [
+    ['curl-de-biceps', 'Curl de bíceps'],
+    ['extension-de-triceps', 'Extensión de tríceps'],
+  ],
+  Abdomen: [
+    ['abdominales', 'Abdominales'],
+    ['elevacion-de-piernas', 'Elevación de piernas'],
+  ],
+  'Cuerpo completo': [['burpees', 'Burpees']],
+};
+
+export const EJERCICIOS_PRECARGADOS: Ejercicio[] = Object.entries(EJERCICIOS_BASICOS_POR_GRUPO).flatMap(
+  ([grupoMuscular, ejercicios]) =>
+    ejercicios.map(([id, nombre]) => ({ id: `basico-ejercicio-${id}`, nombre, grupoMuscular })),
 );
