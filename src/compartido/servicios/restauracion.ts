@@ -1,4 +1,4 @@
-import { db } from '../db'
+import { completarEjerciciosPrecargados, db } from '../db'
 import type { RespaldoV1 } from './respaldo'
 
 export class RespaldoInvalido extends Error {}
@@ -56,9 +56,21 @@ export function validarRespaldo(valor: unknown): RespaldoV1 {
   tabla(datos.equipo, r => {
     exigir(texto(r.nombre) && texto(r.categoria)
       && ['abrigo', 'tecnico', 'campamento', 'comida', 'botiquin', 'otros'].includes(r.categoria)
-      && booleano(r.empacado))
+      && booleano(r.empacado)
+      && (r.pesoGramos === undefined || (numero(r.pesoGramos) && r.pesoGramos > 0)))
   })
-  const ejercicios = tabla(datos.ejercicios, r => exigir(texto(r.nombre) && texto(r.grupoMuscular)))
+  if (datos.perfil !== undefined) {
+    tabla(datos.perfil, r => {
+      exigir(r.pesoCorporalKg === undefined || (numero(r.pesoCorporalKg) && r.pesoCorporalKg > 0))
+    })
+  }
+  const ejercicios = tabla(datos.ejercicios, r => {
+    exigir(texto(r.nombre) && texto(r.grupoMuscular)
+      && (r.descripcion === undefined || texto(r.descripcion))
+      && (r.imagenes === undefined || (Array.isArray(r.imagenes) && r.imagenes.every(texto))))
+    // Un respaldo nunca trae fotos propias; si un archivo editado a mano trae algo, se descarta.
+    delete r.foto
+  })
   tabla(datos.sesiones, r => {
     exigir(fecha(r.fecha) && Array.isArray(r.series))
     for (const entrada of r.series) {
@@ -91,5 +103,8 @@ export async function restaurarRespaldo(valor: unknown): Promise<void> {
     await db.equipo.bulkAdd(datos.equipo)
     await db.ejercicios.bulkAdd(datos.ejercicios)
     await db.sesiones.bulkAdd(datos.sesiones)
+    await db.perfil.bulkAdd(datos.perfil ?? [])
+    // Los respaldos anteriores a las descripciones traen los precargados sin ellas.
+    await completarEjerciciosPrecargados(db.ejercicios)
   })
 }

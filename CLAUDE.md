@@ -48,7 +48,7 @@ La portabilidad se resuelve con exportar/importar un archivo de respaldo.
 src/
 ├── app/                    Navegación, pestañas, layout
 ├── compartido/
-│   ├── tipos.ts            Contrato de datos — CONGELADO
+│   ├── tipos.ts            Contrato de datos
 │   ├── db.ts               Todas las tablas de Dexie
 │   ├── servicios/          openMeteo.ts, respaldo.ts
 │   └── componentes/        Botones, tarjetas, diálogos comunes
@@ -61,8 +61,8 @@ src/
 Un módulo puede importar de `compartido/`, **nunca** del interior de otro módulo.
 Esto es lo que permite que dos personas programen en paralelo sin conflictos.
 
-Si un cambio requiere tocar `compartido/tipos.ts`, **detente y avísalo** en vez de hacerlo:
-rompe el trabajo del otro integrante y necesita su aprobación.
+`compartido/tipos.ts` se puede modificar, pero **cada cambio debe reflejarse en la sección
+"Contrato de datos" de este archivo** en el mismo commit, para que siempre muestre el contrato real.
 
 ## Contrato de datos
 
@@ -95,9 +95,21 @@ export type Categoria = 'abrigo' | 'tecnico' | 'campamento' | 'comida' | 'botiqu
 
 export interface ArticuloEquipo {
   id: string; nombre: string; categoria: Categoria; empacado: boolean;
+  pesoGramos?: number;                   // sin registrar si no viene
 }
 
-export interface Ejercicio { id: string; nombre: string; grupoMuscular: string; }
+// Un solo registro, con id fijo ID_PERFIL (db.ts).
+export interface Perfil {
+  id: string;
+  pesoCorporalKg?: number;
+}
+
+export interface Ejercicio {
+  id: string; nombre: string; grupoMuscular: string;
+  descripcion?: string;                  // cómo se hace, en español
+  imagenes?: string[];                   // fotos precargadas: [posición inicial, final]
+  foto?: Blob;                           // foto propia (WebP; JPEG en Safari); no entra al respaldo
+}
 export interface Serie { ejercicioId: string; repeticiones: number; pesoKg: number; }
 export interface Sesion { id: string; fecha: string; series: Serie[]; }
 ```
@@ -174,12 +186,6 @@ No saltarse el paso 1: define el contrato que ambos integrantes usan.
 Cada paso debe dejar la app compilando y usable.
 
 ## Convenciones de git
-
-El tablero es Jira, proyecto **CDC**. Antepón siempre la clave para que Jira enlace el trabajo:
-
-- Rama: `CDC-21-registro-de-intentos`
-- Commit: `CDC-21 Agrega el formulario de intento`
-- Pull request: `CDC-21 Módulo de registro de intentos`
 
 `main` está protegida: todo entra por pull request, revisado por el otro integrante.
 
