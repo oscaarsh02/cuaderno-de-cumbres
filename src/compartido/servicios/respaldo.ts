@@ -1,5 +1,5 @@
 import { db } from '../db'
-import type { ArticuloEquipo, Ejercicio, Intento, Montana, Sesion } from '../tipos'
+import type { ArticuloEquipo, Ejercicio, Intento, Montana, Perfil, Sesion } from '../tipos'
 
 /** Contrato de intercambio; independiente de la versión interna de IndexedDB. */
 export interface RespaldoV1 {
@@ -12,26 +12,35 @@ export interface RespaldoV1 {
     equipo: ArticuloEquipo[]
     ejercicios: Ejercicio[]
     sesiones: Sesion[]
+    /** Opcional: los respaldos anteriores a la tabla perfil no lo traen. */
+    perfil?: Perfil[]
   }
 }
 
 export async function crearRespaldo(): Promise<RespaldoV1> {
   // Una sola transacción garantiza una fotografía coherente de los tres módulos.
   return db.transaction('r', db.tables, async () => {
-    const [montanas, intentos, equipo, ejercicios, sesiones] = await Promise.all([
+    const [montanas, intentos, equipo, ejercicios, sesiones, perfil] = await Promise.all([
       db.montanas.toArray(),
       db.intentos.toArray(),
       db.equipo.toArray(),
       db.ejercicios.toArray(),
       db.sesiones.toArray(),
+      db.perfil.toArray(),
     ])
     return {
       formato: 'cuaderno-de-cumbres',
       version: 1,
       creadoEn: new Date().toISOString(),
-      datos: { montanas, intentos, equipo, ejercicios, sesiones },
+      // Las fotos propias (Blob) no caben en JSON sin inflar el archivo: se quedan fuera.
+      datos: { montanas, intentos, equipo, ejercicios: ejercicios.map(({ foto: _foto, ...resto }) => resto), sesiones, perfil },
     }
   })
+}
+
+/** Cuántas fotos propias quedarían fuera de un respaldo hecho ahora. */
+export function contarFotosPropias(): Promise<number> {
+  return db.ejercicios.filter(e => e.foto !== undefined).count()
 }
 
 export async function descargarRespaldo(): Promise<void> {

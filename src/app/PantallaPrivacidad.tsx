@@ -15,7 +15,7 @@ export default function PantallaPrivacidad() {
       <Encabezado titulo="Atribuciones y privacidad" volverA="/ajustes" />
       <section aria-labelledby="titulo-privacidad" className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4">
         <h2 id="titulo-privacidad" className="text-xl font-semibold">Aviso de privacidad</h2>
-        <p>Cuaderno de Cumbres es un proyecto escolar de Oscar Sánchez Hernández y Enrique Anzures Morales. Tus registros de cumbres, notas, equipo, ejercicios y sesiones se guardan en este navegador o aplicación instalada, en tu dispositivo.</p>
+        <p>Cuaderno de Cumbres es un proyecto escolar de Oscar Sánchez Hernández y Enrique Anzures Morales. Tus registros de cumbres, notas, equipo, ejercicios, sesiones y, si lo registras, tu peso corporal se guardan en este navegador o aplicación instalada, en tu dispositivo.</p>
         <h3 className="text-lg font-semibold">Tus registros permanecen contigo</h3>
         <p>No tenemos cuentas de usuario ni un servidor que reciba tus registros. No se sincronizan automáticamente entre dispositivos. Esta versión no incorpora publicidad ni herramientas de analítica de uso.</p>
         <h3 className="text-lg font-semibold">Qué se envía al consultar el clima</h3>
@@ -41,9 +41,12 @@ export default function PantallaPrivacidad() {
         <p>Esta versión no muestra mapas ni consulta servicios de OpenStreetMap automáticamente.</p>
         <EnlaceExterno href="https://www.openstreetmap.org/copyright">Derechos de autor y atribución de OpenStreetMap</EnlaceExterno>
         <EnlaceExterno href="https://opendatacommons.org/licenses/odbl/1-0/">Licencia ODbL 1.0</EnlaceExterno>
+        <h3 className="text-lg font-semibold">Imágenes de ejercicios</h3>
+        <p>Las imágenes de los ejercicios precargados provienen del proyecto free-exercise-db, publicado en dominio público (Unlicense). Se redujeron y convirtieron a otro formato para que ocupen menos espacio. Las descripciones son de Cuaderno de Cumbres.</p>
+        <EnlaceExterno href="https://github.com/yuhonas/free-exercise-db">free-exercise-db</EnlaceExterno>
         <p>Estas atribuciones no implican que los proveedores patrocinen o avalen la aplicación. Los enlaces externos requieren conexión y sus sitios tienen sus propias condiciones de privacidad.</p>
       </section>
-      <p className="text-base text-slate-600">Última actualización: 26 de octubre de 2026.</p>
+      <p className="text-base text-slate-600">Última actualización: 20 de noviembre de 2026.</p>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router'
+import DetalleEjercicio from './DetalleEjercicio'
 import EditorEjercicio from './EditorEjercicio'
 import EditorSesion from './EditorSesion'
 import ListaEjercicios from './ListaEjercicios'
@@ -25,7 +26,8 @@ export default function PantallaEntrenamiento() {
       />
       <Route path="ejercicios" element={<ListaEjercicios />} />
       <Route path="ejercicios/nuevo" element={<EditorEjercicio />} />
-      <Route path="ejercicios/:id" element={<EditorEjercicio />} />
+      <Route path="ejercicios/:id" element={<DetalleEjercicio />} />
+      <Route path="ejercicios/:id/editar" element={<EditorEjercicio />} />
       <Route path=":id" element={<EditorSesion />} />
     </Routes>
   )

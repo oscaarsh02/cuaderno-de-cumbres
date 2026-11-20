@@ -3,9 +3,9 @@ import { Link, NavLink, Outlet } from 'react-router'
 import AvisoInstalacion from '../compartido/componentes/AvisoInstalacion'
 
 const PESTANAS: { ruta: string; etiqueta: string; Icono: LucideIcon }[] = [
-  { ruta: '/cumbres', etiqueta: 'Cumbres', Icono: Mountain },
-  { ruta: '/equipo', etiqueta: 'Equipo', Icono: Backpack },
   { ruta: '/entrenamiento', etiqueta: 'Entrenamiento', Icono: Dumbbell },
+  { ruta: '/equipo', etiqueta: 'Equipo', Icono: Backpack },
+  { ruta: '/cumbres', etiqueta: 'Cumbres', Icono: Mountain },
 ]
 
 export default function Layout() {

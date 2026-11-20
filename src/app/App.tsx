@@ -16,14 +16,14 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/cumbres/*" element={<PantallaCumbres />} />
-        <Route path="/equipo/*" element={<PantallaEquipo />} />
         <Route path="/entrenamiento/*" element={<PantallaEntrenamiento />} />
+        <Route path="/equipo/*" element={<PantallaEquipo />} />
+        <Route path="/cumbres/*" element={<PantallaCumbres />} />
         <Route path="/altura" element={<PantallaAltura />} />
         <Route path="/ajustes" element={<PantallaAjustes />} />
         <Route path="/ajustes/privacidad" element={<PantallaPrivacidad />} />
         <Route path="/ajustes/instalacion" element={<PantallaInstalacion />} />
-        <Route path="*" element={<Navigate to="/cumbres" replace />} />
+        <Route path="*" element={<Navigate to="/entrenamiento" replace />} />
       </Route>
     </Routes>
   )

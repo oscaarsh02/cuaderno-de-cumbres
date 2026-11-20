@@ -9,7 +9,7 @@ export default function PantallaAltura() {
   const navigate = useNavigate();
   const location = useLocation();
   // Si se abrió directo (sin historial dentro de la app), "Volver" lleva al inicio.
-  const volver = () => (location.key === 'default' ? navigate('/cumbres') : navigate(-1));
+  const volver = () => (location.key === 'default' ? navigate('/entrenamiento') : navigate(-1));
 
   return (
     <div className="flex flex-col gap-5">

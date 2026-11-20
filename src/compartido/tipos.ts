@@ -26,8 +26,20 @@ export type Categoria = 'abrigo' | 'tecnico' | 'campamento' | 'comida' | 'botiqu
 
 export interface ArticuloEquipo {
   id: string; nombre: string; categoria: Categoria; empacado: boolean;
+  pesoGramos?: number;                   // sin registrar si no viene
 }
 
-export interface Ejercicio { id: string; nombre: string; grupoMuscular: string; }
+// Un solo registro, con id fijo ID_PERFIL (db.ts).
+export interface Perfil {
+  id: string;
+  pesoCorporalKg?: number;
+}
+
+export interface Ejercicio {
+  id: string; nombre: string; grupoMuscular: string;
+  descripcion?: string;                  // cómo se hace, en español
+  imagenes?: string[];                   // fotos precargadas: [posición inicial, final]
+  foto?: Blob;                           // foto propia (WebP; JPEG en Safari); no entra al respaldo
+}
 export interface Serie { ejercicioId: string; repeticiones: number; pesoKg: number; }
 export interface Sesion { id: string; fecha: string; series: Serie[]; }

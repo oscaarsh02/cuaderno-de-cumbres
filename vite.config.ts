@@ -13,7 +13,8 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       workbox: {
         navigateFallback: '/index.html',
-        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'],
+        // webp: fotos de los ejercicios precargados, para que se vean sin conexión.
+        globPatterns: ['**/*.{js,css,html,png,svg,webp,webmanifest}'],
         cleanupOutdatedCaches: true,
       },
       manifest: {

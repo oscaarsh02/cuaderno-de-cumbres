@@ -1,6 +1,6 @@
 import { Trash } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import DialogoConfirmacion from '../../compartido/componentes/DialogoConfirmacion';
 import Encabezado from '../../compartido/componentes/Encabezado';
 import MensajeError from '../../compartido/componentes/MensajeError';
@@ -39,24 +39,32 @@ export default function EditorArticulo() {
 
 function Formulario({ original }: { original: ArticuloEquipo | null }) {
   const navigate = useNavigate();
-  const [nombre, setNombre] = useState(original?.nombre ?? '');
+  // Desde el buscador se puede llegar con el nombre ya escrito: /equipo/nuevo?nombre=Termo
+  const [parametros] = useSearchParams();
+  const [nombre, setNombre] = useState(original?.nombre ?? parametros.get('nombre') ?? '');
   const [categoria, setCategoria] = useState<Categoria | null>(original?.categoria ?? null);
+  const [peso, setPeso] = useState(original?.pesoGramos?.toString() ?? '');
   const [intentoEnviar, setIntentoEnviar] = useState(false);
   const [confirmandoBorrado, setConfirmandoBorrado] = useState(false);
 
   const faltaNombre = nombre.trim() === '';
   const faltaCategoria = categoria === null;
+  // El peso es opcional: vacío = sin registrar. Si se escribe, gramos enteros.
+  const textoPeso = peso.trim();
+  const pesoGramos = textoPeso === '' ? undefined : Number(textoPeso);
+  const pesoInvalido =
+    pesoGramos !== undefined && (!/^\d+$/.test(textoPeso) || pesoGramos < 1 || pesoGramos > 50000);
 
   async function guardar(e: FormEvent) {
     e.preventDefault();
     setIntentoEnviar(true);
-    if (faltaNombre || faltaCategoria) return;
+    if (faltaNombre || faltaCategoria || pesoInvalido) return;
 
     if (original) {
-      // Solo nombre y categoría: no se toca si ya estaba empacado.
-      await db.equipo.update(original.id, { nombre: nombre.trim(), categoria });
+      // No se toca si ya estaba empacado. Un peso undefined borra el que hubiera.
+      await db.equipo.update(original.id, { nombre: nombre.trim(), categoria, pesoGramos });
     } else {
-      await db.equipo.add({ id: nuevoId(), nombre: nombre.trim(), categoria, empacado: false });
+      await db.equipo.add({ id: nuevoId(), nombre: nombre.trim(), categoria, empacado: false, pesoGramos });
     }
     navigate('/equipo');
   }
@@ -118,6 +126,33 @@ function Formulario({ original }: { original: ArticuloEquipo | null }) {
           </div>
           {intentoEnviar && faltaCategoria && <MensajeError texto="Elige una categoría." />}
         </fieldset>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="peso" className="text-base font-semibold">
+            Peso aproximado <span className="font-normal text-slate-600">(opcional)</span>
+          </label>
+          <div className="flex items-center gap-2">
+            <input
+              id="peso"
+              type="text"
+              inputMode="numeric"
+              value={peso}
+              onChange={(e) => setPeso(e.target.value)}
+              placeholder="Por ejemplo: 400"
+              autoComplete="off"
+              aria-describedby="ayuda-peso"
+              aria-invalid={intentoEnviar && pesoInvalido}
+              className="min-h-12 w-40 rounded-xl border border-slate-300 bg-white px-3 text-base"
+            />
+            <span className="text-base text-slate-700">gramos</span>
+          </div>
+          <p id="ayuda-peso" className="text-base text-slate-600">
+            1 kilo son 1000 gramos. Si no lo sabes, déjalo vacío.
+          </p>
+          {intentoEnviar && pesoInvalido && (
+            <MensajeError texto="Escribe el peso en gramos, solo con números (por ejemplo: 400)." />
+          )}
+        </div>
 
         <button
           type="submit"
